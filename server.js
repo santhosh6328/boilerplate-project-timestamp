@@ -38,8 +38,10 @@ app.get("/api/timestamp", (req, res) => {
 app.get("/api/timestamp/:date", (req, res) => {
   if(new Date(req.params.date).getTime() > 0) {
     var date = new Date(req.params.date.toString());
-  }else{
+  }else if(new Date(+req.params.date)>0) {
     var date = new Date(+req.params.date);
+  }else{
+    res.send({error: "Invalid Date"})
   }
   let result = {
     "unix": date.getTime(),
@@ -48,7 +50,6 @@ app.get("/api/timestamp/:date", (req, res) => {
   console.log(result);
   res.send(result);
 });
-
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function () {
